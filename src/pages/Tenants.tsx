@@ -14,7 +14,7 @@ export default function Tenants() {
 
   const [form, setForm] = useState({
     name: '', phone: '', moveInDate: format(new Date(), 'yyyy-MM-dd'),
-    apartmentId: '', rentAmount: '', rentCycle: 'monthly' as RentCycle,
+    apartmentId: '', rentAmount: '', rentCycle: 1 as RentCycle,
   });
 
   const openAdd = () => {
