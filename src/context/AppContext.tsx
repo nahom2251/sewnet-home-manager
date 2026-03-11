@@ -38,8 +38,7 @@ export function useApp() {
 
 function calcNextDue(from: string, cycle: RentCycle): string {
   const d = new Date(from);
-  const months = cycle === 'monthly' ? 1 : cycle === '3months' ? 3 : 6;
-  return format(addMonths(d, months), 'yyyy-MM-dd');
+  return format(addMonths(d, cycle), 'yyyy-MM-dd');
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
