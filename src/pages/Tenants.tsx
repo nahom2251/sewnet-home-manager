@@ -3,7 +3,7 @@ import { useApp } from '@/context/AppContext';
 import SlidePanel from '@/components/SlidePanel';
 import { Button } from '@/components/ui/button';
 import { Tenant, RentCycle, PaymentStatus } from '@/types';
-import { format, addMonths } from 'date-fns';
+import { format, addMonths, differenceInDays } from 'date-fns';
 
 export default function Tenants() {
   const { t, tenants, apartments, addTenant, updateTenant, removeTenant, aptLabel } = useApp();
