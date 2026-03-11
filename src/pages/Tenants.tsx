@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import SlidePanel from '@/components/SlidePanel';
 import { Button } from '@/components/ui/button';
-import { Tenant, RentCycle } from '@/types';
+import { Tenant, RentCycle, PaymentStatus } from '@/types';
 import { format, addMonths } from 'date-fns';
 
 export default function Tenants() {
