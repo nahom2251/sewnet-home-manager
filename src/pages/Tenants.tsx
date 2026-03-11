@@ -34,7 +34,7 @@ export default function Tenants() {
 
   const handleSave = () => {
     const rentAmount = parseFloat(form.rentAmount) || 0;
-    const months = form.rentCycle === 'monthly' ? 1 : form.rentCycle === '3months' ? 3 : 6;
+    const months = form.rentCycle;
     const nextRentDue = format(addMonths(new Date(form.moveInDate), months), 'yyyy-MM-dd');
 
     if (editing) {
