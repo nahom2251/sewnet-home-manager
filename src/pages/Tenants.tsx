@@ -64,6 +64,7 @@ export default function Tenants() {
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground">{t('common.phone')}</th>
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.apartment')}</th>
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.rentCycle')}</th>
+                <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.daysLeft')}</th>
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.rentStatus')}</th>
                 <th className="text-right px-4 py-2 font-medium text-muted-foreground">{t('common.actions')}</th>
               </tr>
