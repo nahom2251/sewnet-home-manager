@@ -19,7 +19,7 @@ export default function Tenants() {
 
   const openAdd = () => {
     setEditing(null);
-    setForm({ name: '', phone: '', moveInDate: format(new Date(), 'yyyy-MM-dd'), apartmentId: '', rentAmount: '', rentCycle: 'monthly' });
+    setForm({ name: '', phone: '', moveInDate: format(new Date(), 'yyyy-MM-dd'), apartmentId: '', rentAmount: '', rentCycle: 1 });
     setPanelOpen(true);
   };
 
