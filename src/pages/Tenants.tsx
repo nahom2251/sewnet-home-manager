@@ -78,7 +78,12 @@ export default function Tenants() {
                     <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">
                       {apt ? aptLabel(apt.floor, apt.position) : '—'}
                     </td>
-                    <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">{form.rentCycle} {t('tenant.months')}</td>
+                    <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">{tenant.rentCycle} {t('tenant.months')}</td>
+                    <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">
+                      <span className={`px-2 py-1 rounded-full text-xs ${tenant.rentStatus === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        {t(`common.${tenant.rentStatus}`)}
+                      </span>
+                    </td>
                     <td className="px-4 py-2.5 text-right space-x-2">
                       <button onClick={() => openEdit(tenant)} className="text-xs text-primary hover:underline">{t('common.edit')}</button>
                       <button onClick={() => { if (confirm('Remove tenant?')) removeTenant(tenant.id); }} className="text-xs text-destructive hover:underline">{t('common.delete')}</button>
