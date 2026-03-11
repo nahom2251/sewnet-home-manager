@@ -55,6 +55,7 @@ const translations: Record<string, Record<Language, string>> = {
   'tenant.rentAmount': { en: 'Rent Amount', am: 'የኪራይ መጠን' },
   'tenant.rentCycle': { en: 'Payment Duration (months)', am: 'የክፍያ ቆይታ (በወር)' },
   'tenant.months': { en: 'months', am: 'ወር' },
+  'tenant.rentStatus': { en: 'Rent Status', am: 'የኪራይ ሁኔታ' },
   'tenant.nextDue': { en: 'Next Rent Due', am: 'ቀጣይ ኪራይ' },
   'tenant.apartment': { en: 'Apartment', am: 'አፓርትመንት' },
 

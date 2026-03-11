@@ -21,6 +21,7 @@ export interface Tenant {
   rentAmount: number;
   rentCycle: RentCycle;
   nextRentDue: string;
+  rentStatus: PaymentStatus;
 }
 
 export interface Payment {

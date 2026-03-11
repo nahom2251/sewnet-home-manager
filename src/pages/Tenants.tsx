@@ -27,7 +27,7 @@ export default function Tenants() {
     setEditing(tenant);
     setForm({
       name: tenant.name, phone: tenant.phone, moveInDate: tenant.moveInDate,
-      apartmentId: tenant.apartmentId, rentAmount: String(tenant.rentAmount), rentCycle: tenant.rentCycle,
+      apartmentId: tenant.apartmentId, rentAmount: String(tenant.rentAmount), rentCycle: tenant.rentCycle, rentStatus: tenant.rentStatus,
     });
     setPanelOpen(true);
   };
