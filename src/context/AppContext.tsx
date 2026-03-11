@@ -124,11 +124,19 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (tenant.nextRentDue) {
         const due = new Date(tenant.nextRentDue);
         const diff = Math.ceil((due.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        if (diff <= 5 && diff >= 0) {
+        if (diff < 0) {
           const apt = apartments.find(a => a.id === tenant.apartmentId);
           if (apt) {
             notes.push({
-              message: t('dash.rentDueSoon', { days: String(diff) }),
+              message: `${tenant.name}: ${t('tenant.overdue', { days: String(Math.abs(diff)) })}`,
+              aptId: apt.id,
+            });
+          }
+        } else if (diff <= 5) {
+          const apt = apartments.find(a => a.id === tenant.apartmentId);
+          if (apt) {
+            notes.push({
+              message: `${tenant.name}: ${diff === 0 ? t('tenant.dueToday') : t('dash.rentDueSoon', { days: String(diff) })}`,
               aptId: apt.id,
             });
           }
