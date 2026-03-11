@@ -53,10 +53,9 @@ const translations: Record<string, Record<Language, string>> = {
   'tenant.edit': { en: 'Edit Tenant', am: 'ተከራይ አርም' },
   'tenant.moveInDate': { en: 'Move-in Date', am: 'የመግቢያ ቀን' },
   'tenant.rentAmount': { en: 'Rent Amount', am: 'የኪራይ መጠን' },
-  'tenant.rentCycle': { en: 'Payment Cycle', am: 'የክፍያ ዑደት' },
-  'tenant.monthly': { en: 'Monthly', am: 'ወርሃዊ' },
-  'tenant.3months': { en: 'Every 3 Months', am: 'በ3 ወር' },
-  'tenant.6months': { en: 'Every 6 Months', am: 'በ6 ወር' },
+  'tenant.rentCycle': { en: 'Payment Duration (months)', am: 'የክፍያ ቆይታ (በወር)' },
+  'tenant.months': { en: 'months', am: 'ወር' },
+  'tenant.rentStatus': { en: 'Rent Status', am: 'የኪራይ ሁኔታ' },
   'tenant.nextDue': { en: 'Next Rent Due', am: 'ቀጣይ ኪራይ' },
   'tenant.apartment': { en: 'Apartment', am: 'አፓርትመንት' },
 

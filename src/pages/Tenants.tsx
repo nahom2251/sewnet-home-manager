@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import SlidePanel from '@/components/SlidePanel';
 import { Button } from '@/components/ui/button';
-import { Tenant, RentCycle } from '@/types';
+import { Tenant, RentCycle, PaymentStatus } from '@/types';
 import { format, addMonths } from 'date-fns';
 
 export default function Tenants() {
@@ -14,12 +14,12 @@ export default function Tenants() {
 
   const [form, setForm] = useState({
     name: '', phone: '', moveInDate: format(new Date(), 'yyyy-MM-dd'),
-    apartmentId: '', rentAmount: '', rentCycle: 'monthly' as RentCycle,
+    apartmentId: '', rentAmount: '', rentCycle: 1 as RentCycle, rentStatus: 'unpaid' as PaymentStatus,
   });
 
   const openAdd = () => {
     setEditing(null);
-    setForm({ name: '', phone: '', moveInDate: format(new Date(), 'yyyy-MM-dd'), apartmentId: '', rentAmount: '', rentCycle: 'monthly' });
+    setForm({ name: '', phone: '', moveInDate: format(new Date(), 'yyyy-MM-dd'), apartmentId: '', rentAmount: '', rentCycle: 1, rentStatus: 'unpaid' });
     setPanelOpen(true);
   };
 
@@ -27,21 +27,21 @@ export default function Tenants() {
     setEditing(tenant);
     setForm({
       name: tenant.name, phone: tenant.phone, moveInDate: tenant.moveInDate,
-      apartmentId: tenant.apartmentId, rentAmount: String(tenant.rentAmount), rentCycle: tenant.rentCycle,
+      apartmentId: tenant.apartmentId, rentAmount: String(tenant.rentAmount), rentCycle: tenant.rentCycle, rentStatus: tenant.rentStatus,
     });
     setPanelOpen(true);
   };
 
   const handleSave = () => {
     const rentAmount = parseFloat(form.rentAmount) || 0;
-    const months = form.rentCycle === 'monthly' ? 1 : form.rentCycle === '3months' ? 3 : 6;
+    const months = form.rentCycle;
     const nextRentDue = format(addMonths(new Date(form.moveInDate), months), 'yyyy-MM-dd');
 
     if (editing) {
-      updateTenant({ ...editing, name: form.name, phone: form.phone, moveInDate: form.moveInDate, rentAmount, rentCycle: form.rentCycle, nextRentDue });
+      updateTenant({ ...editing, name: form.name, phone: form.phone, moveInDate: form.moveInDate, rentAmount, rentCycle: form.rentCycle, rentStatus: form.rentStatus });
     } else {
       if (!form.apartmentId) return;
-      addTenant({ name: form.name, phone: form.phone, moveInDate: form.moveInDate, apartmentId: form.apartmentId, rentAmount, rentCycle: form.rentCycle, nextRentDue });
+      addTenant({ name: form.name, phone: form.phone, moveInDate: form.moveInDate, apartmentId: form.apartmentId, rentAmount, rentCycle: form.rentCycle, rentStatus: form.rentStatus, nextRentDue });
     }
     setPanelOpen(false);
   };
@@ -64,6 +64,7 @@ export default function Tenants() {
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground">{t('common.phone')}</th>
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.apartment')}</th>
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.rentCycle')}</th>
+                <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.rentStatus')}</th>
                 <th className="text-right px-4 py-2 font-medium text-muted-foreground">{t('common.actions')}</th>
               </tr>
             </thead>
@@ -77,7 +78,12 @@ export default function Tenants() {
                     <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">
                       {apt ? aptLabel(apt.floor, apt.position) : '—'}
                     </td>
-                    <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">{t(`tenant.${tenant.rentCycle}`)}</td>
+                    <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">{tenant.rentCycle} {t('tenant.months')}</td>
+                    <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">
+                      <span className={`px-2 py-1 rounded-full text-xs ${tenant.rentStatus === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        {t(`common.${tenant.rentStatus}`)}
+                      </span>
+                    </td>
                     <td className="px-4 py-2.5 text-right space-x-2">
                       <button onClick={() => openEdit(tenant)} className="text-xs text-primary hover:underline">{t('common.edit')}</button>
                       <button onClick={() => { if (confirm('Remove tenant?')) removeTenant(tenant.id); }} className="text-xs text-destructive hover:underline">{t('common.delete')}</button>
@@ -121,10 +127,13 @@ export default function Tenants() {
           </div>
           <div>
             <label className="text-xs text-muted-foreground block mb-1">{t('tenant.rentCycle')}</label>
-            <select className="w-full border border-input bg-card rounded-md px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring" value={form.rentCycle} onChange={e => setForm(f => ({ ...f, rentCycle: e.target.value as RentCycle }))}>
-              <option value="monthly">{t('tenant.monthly')}</option>
-              <option value="3months">{t('tenant.3months')}</option>
-              <option value="6months">{t('tenant.6months')}</option>
+            <input type="number" min={1} max={12} className="w-full border border-input bg-card rounded-md px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring" value={form.rentCycle} onChange={e => setForm(f => ({ ...f, rentCycle: Math.min(12, Math.max(1, parseInt(e.target.value) || 1)) as RentCycle }))} />
+          </div>
+          <div>
+            <label className="text-xs text-muted-foreground block mb-1">{t('tenant.rentStatus')}</label>
+            <select className="w-full border border-input bg-card rounded-md px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring" value={form.rentStatus} onChange={e => setForm(f => ({ ...f, rentStatus: e.target.value as PaymentStatus }))}>
+              <option value="paid">{t('common.paid')}</option>
+              <option value="unpaid">{t('common.unpaid')}</option>
             </select>
           </div>
           <div className="flex gap-2 pt-2">
