@@ -121,11 +121,7 @@ export default function Tenants() {
           </div>
           <div>
             <label className="text-xs text-muted-foreground block mb-1">{t('tenant.rentCycle')}</label>
-            <select className="w-full border border-input bg-card rounded-md px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring" value={form.rentCycle} onChange={e => setForm(f => ({ ...f, rentCycle: e.target.value as RentCycle }))}>
-              <option value="monthly">{t('tenant.monthly')}</option>
-              <option value="3months">{t('tenant.3months')}</option>
-              <option value="6months">{t('tenant.6months')}</option>
-            </select>
+            <input type="number" min={1} max={12} className="w-full border border-input bg-card rounded-md px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring" value={form.rentCycle} onChange={e => setForm(f => ({ ...f, rentCycle: Math.min(12, Math.max(1, parseInt(e.target.value) || 1)) as RentCycle }))} />
           </div>
           <div className="flex gap-2 pt-2">
             <Button onClick={handleSave} className="flex-1">{t('common.save')}</Button>

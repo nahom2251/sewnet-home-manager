@@ -1,6 +1,6 @@
 export type ApartmentPosition = 'front' | 'back' | 'single';
 export type PaymentStatus = 'paid' | 'unpaid';
-export type RentCycle = 'monthly' | '3months' | '6months';
+export type RentCycle = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export type Language = 'en' | 'am';
 export type BillType = 'rent' | 'water' | 'electricity';
 
