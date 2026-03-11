@@ -38,7 +38,7 @@ export default function Tenants() {
     const nextRentDue = format(addMonths(new Date(form.moveInDate), months), 'yyyy-MM-dd');
 
     if (editing) {
-      updateTenant({ ...editing, name: form.name, phone: form.phone, moveInDate: form.moveInDate, rentAmount, rentCycle: form.rentCycle, rentStatus: form.rentStatus });
+      updateTenant({ ...editing, name: form.name, phone: form.phone, moveInDate: form.moveInDate, rentAmount, rentCycle: form.rentCycle, rentStatus: form.rentStatus, nextRentDue });
     } else {
       if (!form.apartmentId) return;
       addTenant({ name: form.name, phone: form.phone, moveInDate: form.moveInDate, apartmentId: form.apartmentId, rentAmount, rentCycle: form.rentCycle, rentStatus: form.rentStatus, nextRentDue });
