@@ -3,7 +3,7 @@ import { useApp } from '@/context/AppContext';
 import SlidePanel from '@/components/SlidePanel';
 import { Button } from '@/components/ui/button';
 import { Tenant, RentCycle, PaymentStatus } from '@/types';
-import { format, addMonths } from 'date-fns';
+import { format, addMonths, differenceInDays } from 'date-fns';
 
 export default function Tenants() {
   const { t, tenants, apartments, addTenant, updateTenant, removeTenant, aptLabel } = useApp();
@@ -38,7 +38,7 @@ export default function Tenants() {
     const nextRentDue = format(addMonths(new Date(form.moveInDate), months), 'yyyy-MM-dd');
 
     if (editing) {
-      updateTenant({ ...editing, name: form.name, phone: form.phone, moveInDate: form.moveInDate, rentAmount, rentCycle: form.rentCycle, rentStatus: form.rentStatus });
+      updateTenant({ ...editing, name: form.name, phone: form.phone, moveInDate: form.moveInDate, rentAmount, rentCycle: form.rentCycle, rentStatus: form.rentStatus, nextRentDue });
     } else {
       if (!form.apartmentId) return;
       addTenant({ name: form.name, phone: form.phone, moveInDate: form.moveInDate, apartmentId: form.apartmentId, rentAmount, rentCycle: form.rentCycle, rentStatus: form.rentStatus, nextRentDue });
@@ -64,6 +64,7 @@ export default function Tenants() {
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground">{t('common.phone')}</th>
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.apartment')}</th>
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.rentCycle')}</th>
+                <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.daysLeft')}</th>
                 <th className="text-left px-4 py-2 font-medium text-muted-foreground hidden sm:table-cell">{t('tenant.rentStatus')}</th>
                 <th className="text-right px-4 py-2 font-medium text-muted-foreground">{t('common.actions')}</th>
               </tr>
@@ -71,6 +72,17 @@ export default function Tenants() {
             <tbody>
               {tenants.map(tenant => {
                 const apt = apartments.find(a => a.id === tenant.apartmentId);
+                const daysLeft = tenant.nextRentDue
+                  ? differenceInDays(new Date(tenant.nextRentDue), new Date())
+                  : null;
+                const daysLabel = daysLeft === null ? '—'
+                  : daysLeft < 0 ? t('tenant.overdue', { days: String(Math.abs(daysLeft)) })
+                  : daysLeft === 0 ? t('tenant.dueToday')
+                  : t('tenant.daysUntilDue', { days: String(daysLeft) });
+                const daysColor = daysLeft === null ? '' 
+                  : daysLeft <= 0 ? 'text-destructive font-semibold'
+                  : daysLeft <= 5 ? 'text-orange-500 font-medium'
+                  : 'text-green-600';
                 return (
                   <tr key={tenant.id} className="border-b border-border last:border-0">
                     <td className="px-4 py-2.5 text-foreground">{tenant.name}</td>
@@ -79,6 +91,7 @@ export default function Tenants() {
                       {apt ? aptLabel(apt.floor, apt.position) : '—'}
                     </td>
                     <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">{tenant.rentCycle} {t('tenant.months')}</td>
+                    <td className={`px-4 py-2.5 hidden sm:table-cell ${daysColor}`}>{daysLabel}</td>
                     <td className="px-4 py-2.5 text-foreground hidden sm:table-cell">
                       <span className={`px-2 py-1 rounded-full text-xs ${tenant.rentStatus === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                         {t(`common.${tenant.rentStatus}`)}
